@@ -16,8 +16,6 @@
 
 package com.example.customAuthNode;
 
-import java.util.regex.Pattern;
-
 import javax.inject.Inject;
 
 import org.forgerock.openam.auth.node.api.Action;
@@ -46,22 +44,21 @@ import org.forgerock.json.JsonValue;
 import org.forgerock.json.JsonValueException;
 import org.forgerock.openam.annotations.sm.Attribute;
 import org.forgerock.openam.auth.node.api.OutcomeProvider;
-import org.forgerock.openam.auth.node.api.OutcomeProvider.Outcome;
+
 import static org.forgerock.openam.auth.node.api.SharedStateConstants.USERNAME;
 import org.forgerock.openam.sm.AnnotatedServiceRegistry;
 import org.forgerock.util.i18n.PreferredLocales;
 
-
+//TODO Update Javadov
 /**
  * A node that checks to see if zero-page login headers have specified username and whether that username is in a group
  * permitted to use zero-page login headers.
  */
-@Node.Metadata(outcomeProvider  = myCustomAuthNode.myCustomAuthNodeOutcomeProvider.class,
-               configClass      = myCustomAuthNode.Config.class)
-public class myCustomAuthNode implements Node {
+@Node.Metadata(outcomeProvider  = VoisentryVerifyNode.myCustomAuthNodeOutcomeProvider.class,
+               configClass      = VoisentryVerifyNode.Config.class)
+public class VoisentryVerifyNode implements Node {
 
-    private final Pattern DN_PATTERN = Pattern.compile("^[a-zA-Z0-9]=([^,]+),");
-    private final Logger logger = LoggerFactory.getLogger(myCustomAuthNode.class);
+    private final Logger logger = LoggerFactory.getLogger(VoisentryVerifyNode.class);
     private final VoisentryService serviceConfig;
     private final Config config;
     private final Realm realm;
@@ -124,8 +121,7 @@ public class myCustomAuthNode implements Node {
          */
         @Attribute(order = 70)
         default Set<VoisentryErrorCode> errorCodeOutcomes() {
-            Set<VoisentryErrorCode> errorCodeOutcomes = new LinkedHashSet<>();
-            return errorCodeOutcomes;
+            return new LinkedHashSet<>();
         }
                 
     }
@@ -140,7 +136,7 @@ public class myCustomAuthNode implements Node {
      * @throws NodeProcessException If the configuration was not valid.
      */
     @Inject
-    public myCustomAuthNode(@Assisted Config config, @Assisted Realm realm, AnnotatedServiceRegistry serviceRegistry) throws NodeProcessException {
+    public VoisentryVerifyNode(@Assisted Config config, @Assisted Realm realm, AnnotatedServiceRegistry serviceRegistry) throws NodeProcessException {
         this.config = config;
         this.realm = realm;
         try {
@@ -154,7 +150,8 @@ public class myCustomAuthNode implements Node {
     public Action process(TreeContext context) throws NodeProcessException {
         
         logger.error("VoisentryVerifyNode started");
-        
+
+        //TODO Duplicated code with VoiceSentryUpdateNode. Externalize the method
         logger.error("Get config attributes");
         String voisentryNodeUrl    = config.voisentryNodeUrl();
         if (voisentryNodeUrl == null || voisentryNodeUrl.isEmpty()) {
@@ -184,7 +181,8 @@ public class myCustomAuthNode implements Node {
             
             VoisentryConstants.ServiceGetEnrolId configGetEnrolId  = serviceConfig.getEnrolId();
             String                               configEnrolIdName = serviceConfig.idRepoEnrolidName();
-            
+
+            //TODO Duplicated Code
             if (configGetEnrolId == VoisentryConstants.ServiceGetEnrolId.ENROLID) {
             
                 logger.error("Get the enrolid from the shared state");
@@ -229,9 +227,8 @@ public class myCustomAuthNode implements Node {
                         if (idRepoEnrolid == null || idRepoEnrolid.isEmpty()) {
                             throw new NodeProcessException("Id repository enrol id field name not provided");
                         }
-                        String idRepoEnrolId = IdUtils.getIdentity(username, realm).getAttribute(idRepoEnrolid).iterator()
-                                                      .next();
-                        enrolId = idRepoEnrolId;
+                        enrolId = IdUtils.getIdentity(username, realm).getAttribute(idRepoEnrolid).iterator()
+                                         .next();
                     } catch (IdRepoException | SSOException e) {
                         logger.error("Get id repo exception: " + e.getMessage());
                         throw new NodeProcessException(e);
@@ -241,7 +238,8 @@ public class myCustomAuthNode implements Node {
         }
         
         if (config.getEnrolId() == VoisentryConstants.GetEnrolId.ENROLID) {
-            
+
+            //TODO Duplicated Code
             logger.error("Get the enrolid from the shared state");
             String enrolid = null;
             try {
@@ -254,7 +252,7 @@ public class myCustomAuthNode implements Node {
             enrolId = enrolid;
             
         } else {
-            
+            //TODO Duplicated Code
             VoisentryConstants.GetEnrolId configGetEnrolId  = config.getEnrolId();
             String                        configEnrolIdName = config.idRepoEnrolidName();
             
@@ -279,20 +277,19 @@ public class myCustomAuthNode implements Node {
                 //Code to get the employee Number
                 try {
                     logger.error("Get enrolid from the id repo");
-                    String idRepoEnrolid = configEnrolIdName;
-                    if (idRepoEnrolid.isEmpty()) {
+                    if (configEnrolIdName.isEmpty()) {
                         throw new NodeProcessException("Id repository enrol id field name not provided");
                     }
-                    String idRepoEnrolId = IdUtils.getIdentity(username, realm).getAttribute(idRepoEnrolid).iterator()
-                                                   .next();
-                    enrolId = idRepoEnrolId;
+                    enrolId = IdUtils.getIdentity(username, realm).getAttribute(configEnrolIdName).iterator()
+                                     .next();
                 } catch (IdRepoException | SSOException e) {
                     logger.error("Get id repo exception: " + e.getMessage());
                     throw new NodeProcessException(e);
                 }
             }
         }
-        
+
+        //TODO Duplicated Code
         if (enrolId == null || enrolId.isEmpty()) {
             logger.error("Failed to get the enrolid from the config");
             throw new NodeProcessException("Failed to get the enrolid from the config");
@@ -317,7 +314,7 @@ public class myCustomAuthNode implements Node {
             //check the verification result
             logger.error("Verified result: " + vsResponse.getVerified());
             boolean verified = false;
-            if (vsResponse.getVerified() == true) {
+            if (vsResponse.getVerified()) {
                 verified = true;
                 
             }
@@ -332,7 +329,7 @@ public class myCustomAuthNode implements Node {
             }
             
             //check if verified
-            if (verified == true) {
+            if (verified) {
                 logger.error("Verification successful");
                 
                 if (config.updateVoiceprint()) {
@@ -370,9 +367,9 @@ public class myCustomAuthNode implements Node {
     }
     
     public static class myCustomAuthNodeOutcomeProvider implements OutcomeProvider {
-        private static final String BUNDLE = myCustomAuthNode.class.getName().replace(".", "/");
+        private static final String BUNDLE = VoisentryVerifyNode.class.getName().replace(".", "/");
         
-        private static final Logger logger = LoggerFactory.getLogger(myCustomAuthNode.class);
+        private static final Logger logger = LoggerFactory.getLogger(VoisentryVerifyNode.class);
 
         @Override
         public List<Outcome> getOutcomes(PreferredLocales locales, JsonValue nodeAttributes) {

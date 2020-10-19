@@ -16,10 +16,8 @@ import org.slf4j.LoggerFactory;
  * @author hollowek
  */
 public class VoisentryResponseUpdate extends VoisentryResponse {
-    
-    private final Logger logger = LoggerFactory.getLogger(VoisentryResponseUpdate.class);
-    
-    
+
+
     public VoisentryResponseUpdate (String response) throws NodeProcessException {
         
         super(response);
@@ -27,13 +25,15 @@ public class VoisentryResponseUpdate extends VoisentryResponse {
         if (this.status != VoisentryResponseCode.ALL_GOOD) {
             return;
         }
-        
+
+        //TODO What is the purpose of this try statement?
         try {
-        
+
             JSONObject jsonResult = new JSONObject(this.result);
             JSONObject jsonUpdate = new JSONObject(jsonResult.getString(VoisentryResponseConstants.UPDATED));
-    
+
         } catch (JSONException e) {
+            Logger logger = LoggerFactory.getLogger(VoisentryResponseUpdate.class);
             logger.error("Exception message: " + e.getMessage());
             throw new NodeProcessException(e);
         }

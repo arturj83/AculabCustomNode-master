@@ -17,23 +17,19 @@ public class VoisentryResponse {
     
     protected int    status;
     protected String result;
-    
-    
-    public VoisentryResponse (String response) throws NodeProcessException {
-        
+
+
+    public VoisentryResponse(String response) throws NodeProcessException {
+
         this.result = null;
-        
+
         try {
-        
             JSONObject jsonResponse = new JSONObject(response);
-        
-            this.status = jsonResponse.getInt   (VoisentryResponseConstants.STATUS);
+            this.status = jsonResponse.getInt(VoisentryResponseConstants.STATUS);
             this.result = jsonResponse.getString(VoisentryResponseConstants.RESULT);
-            
         } catch (JSONException e) {
             throw new NodeProcessException(e);
         }
-           
     }
     
     public int getStatus() {

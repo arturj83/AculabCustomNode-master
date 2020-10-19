@@ -319,9 +319,9 @@ public class VoisentryUpdateNode extends AbstractDecisionNode {
     }
     
     public static class VoisentryUpdateNodeOutcomeProvider implements org.forgerock.openam.auth.node.api.OutcomeProvider {
-        private static final String BUNDLE = myCustomAuthNode.class.getName().replace(".", "/");
+        private static final String BUNDLE = VoisentryVerifyNode.class.getName().replace(".", "/");
         
-        private static final Logger logger = LoggerFactory.getLogger(myCustomAuthNode.class);
+        private static final Logger logger = LoggerFactory.getLogger(VoisentryVerifyNode.class);
 
         @Override
         public List<org.forgerock.openam.auth.node.api.OutcomeProvider.Outcome> getOutcomes(PreferredLocales locales, JsonValue nodeAttributes) {

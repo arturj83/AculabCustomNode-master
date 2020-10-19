@@ -12,7 +12,8 @@ package com.example.customAuthNode;
 public enum VoisentryErrorCode {
     
     /** the error codes. */
-    
+
+    //TODO Error codes never used
     Err400("Error 400 Bad API",          VoisentryResponseCode.ERR_BAD_API_REQ),
     Err405("Error 405 API not allowed",  VoisentryResponseCode.ERR_BAD_API_REQ_NOT_ALLOWED),
     Err408("Error 408 DB timeout",       VoisentryResponseCode.ERR_DB_TIMEOUT),
@@ -22,16 +23,15 @@ public enum VoisentryErrorCode {
     Err500("Error 500 Exception",        VoisentryResponseCode.ERR_EXCEPTION),
     Err503("Error 503 Service disabled", VoisentryResponseCode.ERR_SERVICE),
     Err507("Error 507 Disk/Memory",      VoisentryResponseCode.ERR_DISK_MEM);
-    
-    private String name;
-    private int    errorCode;
+
+    private final String name;
+    private final int errorCode;
     
     /**
      * The constructor.
      *
      * @param name the algorithm name.
-     * @param coseNumber the value representing the algorithm.
-     * 
+     *
      */
     VoisentryErrorCode(String name, int errorCode) {
         this.name      = name;

@@ -8,6 +8,7 @@ package com.example.customAuthNode;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -25,28 +26,25 @@ import org.slf4j.LoggerFactory;
  */
 public class VoisentryRequest {
     
-    private Logger logger = LoggerFactory.getLogger(VoisentryRequest.class);
+    private final Logger logger = LoggerFactory.getLogger(VoisentryRequest.class);
     
-    private String voisentryNodeUrl;
-    private String voisentryDatasetKey;
-    
-    
-    public  VoisentryRequest (String voisentryNodeUrl,
-                              String voisentryDatasetKey) {
-        
-        this.voisentryNodeUrl    = voisentryNodeUrl;
+    private final String voisentryNodeUrl;
+    private final String voisentryDatasetKey;
+
+
+    public VoisentryRequest(String voisentryNodeUrl, String voisentryDatasetKey) {
+        this.voisentryNodeUrl = voisentryNodeUrl;
         this.voisentryDatasetKey = voisentryDatasetKey;
-        
     }
-    
+
     //send verify request
-    public VoisentryResponseVerify sendVerify (String            enrolId,
-                                               List<String>  audioSource) throws NodeProcessException {
+    public VoisentryResponseVerify sendVerify(String enrolId, List<String> audioSource) throws NodeProcessException {
         
         logger.error("Sending verify request...");
         
         String reqUrl = this.voisentryNodeUrl + "/verify?key=" + this.voisentryDatasetKey + "&enrolid=" + enrolId;
-        
+
+        //TODO Duplicated code
         MultipartEntityBuilder mpart = MultipartEntityBuilder.create();
         if (audioSource != null && !audioSource.isEmpty()) {
             for (int i = 0; i < audioSource.size(); i++) {
@@ -69,15 +67,15 @@ public class VoisentryRequest {
         return (new VoisentryResponseVerify(result));
         
     }
-    
+
     //send update request
-    public VoisentryResponseUpdate sendUpdate (String            enrolId,
-                                               List<String>  audioSource) throws NodeProcessException {
+    public VoisentryResponseUpdate sendUpdate(String enrolId, List<String> audioSource) throws NodeProcessException {
         
         logger.error("Sending update request...");
         
         String reqUrl = this.voisentryNodeUrl + "/update?key=" + this.voisentryDatasetKey + "&enrolid=" + enrolId;
-        
+
+        //TODO Duplicated code
         MultipartEntityBuilder mpart = MultipartEntityBuilder.create();
         if (audioSource != null && !audioSource.isEmpty()) {
             for (int i = 0; i < audioSource.size(); i++) {
@@ -101,16 +99,14 @@ public class VoisentryRequest {
         return (new VoisentryResponseUpdate(result));
         
     }
-    
-    
+
     //send post request
-    private String sendPostRequest (String                 url,
-                                    MultipartEntityBuilder mpart) throws NodeProcessException {
-        
+    private String sendPostRequest(String url, MultipartEntityBuilder mpart) throws NodeProcessException {
+
         try {
-        
+
             try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-                
+
                 HttpPost httppost = new HttpPost(url);
 
                 HttpEntity reqEntity = mpart.build();
@@ -118,25 +114,19 @@ public class VoisentryRequest {
 
                 logger.error("executing request " + httppost.getRequestLine());
                 try (CloseableHttpResponse response = httpclient.execute(httppost)) {
-                    
+
                     HttpEntity resEntity = response.getEntity();
                     if (resEntity != null) {
-                        String result = EntityUtils.toString(response.getEntity());
-                        return result;
+                        return EntityUtils.toString(response.getEntity());
                     }
-                    EntityUtils.consume(resEntity);
-                    
                 }
-                
             }
-        
         } catch (IOException e) {
             logger.error(e.getMessage());
             throw new NodeProcessException(e);
         }
-        
         return null;
-        
+
     }
     
 }
