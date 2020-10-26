@@ -38,7 +38,7 @@ public interface VoisentryService {
     }
     
     /**
-    * The id repository field name for the enrolid source
+    * The id repository field name for the enrollid source
     */
     @Attribute(order = 40)
     String idRepoEnrolidName();

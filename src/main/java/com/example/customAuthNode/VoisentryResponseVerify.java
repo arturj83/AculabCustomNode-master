@@ -16,60 +16,58 @@ import org.slf4j.LoggerFactory;
  * @author hollowek
  */
 public class VoisentryResponseVerify extends VoisentryResponse {
-    
-    private final Logger logger = LoggerFactory.getLogger(VoisentryResponseVerify.class);
-    
+
     private double     confidence;
     private boolean    verified;
-    
     private String     pad_type;
-    
-    
-    public VoisentryResponseVerify (String response) throws NodeProcessException {
-        
+
+
+    public VoisentryResponseVerify(String response) throws NodeProcessException {
+
         super(response);
-        
+
         this.pad_type = null;
-        
+
         if (this.status != VoisentryResponseCode.ALL_GOOD) {
             return;
         }
-        
+
+        Logger logger = LoggerFactory.getLogger(VoisentryResponseVerify.class);
         try {
-        
+
             JSONObject jsonResult = new JSONObject(this.result);
             JSONObject jsonVerify = new JSONObject(jsonResult.getString(VoisentryResponseConstants.VERIFICATION));
-            
-            this.confidence = jsonVerify.getDouble (VoisentryResponseConstants.CONFIDENCE);
-            this.verified   = jsonVerify.getBoolean(VoisentryResponseConstants.VERIFIED);
-            
+
+            this.confidence = jsonVerify.getDouble(VoisentryResponseConstants.CONFIDENCE);
+            this.verified = jsonVerify.getBoolean(VoisentryResponseConstants.VERIFIED);
+
             JSONObject pad_info = new JSONObject(jsonVerify.getString(VoisentryResponseConstants.PAD_INFO));
             if (pad_info.has(VoisentryResponseConstants.PAD_TYPE)) {
                 logger.error("Has pad_type");
                 this.pad_type = pad_info.getString(VoisentryResponseConstants.PAD_TYPE);
             }
-    
+
         } catch (JSONException e) {
             logger.error("Exception message: " + e.getMessage());
             throw new NodeProcessException(e);
         }
-           
+
     }
-    
-    public     int getStatus() {
+
+    public int getStatus() {
         return this.status;
     }
-    
-    public  double getConfidence() {
+
+    public double getConfidence() {
         return this.confidence;
     }
-    
+
     public boolean getVerified() {
         return this.verified;
     }
-    
-    public  String getPadType() {
+
+    public String getPadType() {
         return this.pad_type;
     }
-    
+
 }

@@ -59,7 +59,7 @@ import org.forgerock.openam.plugins.StartupType;
  * @supported.all.api
  * @since AM 5.5.0
  */
-public class myCustomAuthNodePlugin extends AbstractNodeAmPlugin {
+public class VoisentryVerifyNodePlugin extends AbstractNodeAmPlugin {
 
 	static private String currentVersion = "0.0.0";
 
@@ -71,8 +71,8 @@ public class myCustomAuthNodePlugin extends AbstractNodeAmPlugin {
      */
 	@Override
 	protected Map<String, Iterable<? extends Class<? extends Node>>> getNodesByVersion() {
-		return Collections.singletonMap(myCustomAuthNodePlugin.currentVersion,
-										Arrays.asList(myCustomAuthNode.class, VoisentryEnrolidCollectorNode.class, VoisentryAudioCollector.class, VoisentryUpdateNode.class));
+		return Collections.singletonMap(VoisentryVerifyNodePlugin.currentVersion,
+										Arrays.asList(VoisentryVerifyNode.class, VoisentryEnrolidCollectorNode.class, VoisentryAudioCollector.class, VoisentryUpdateNode.class));
 	}
 
     /**
@@ -122,6 +122,6 @@ public class myCustomAuthNodePlugin extends AbstractNodeAmPlugin {
      */
 	@Override
 	public String getPluginVersion() {
-		return myCustomAuthNodePlugin.currentVersion;
+		return VoisentryVerifyNodePlugin.currentVersion;
 	}
 }

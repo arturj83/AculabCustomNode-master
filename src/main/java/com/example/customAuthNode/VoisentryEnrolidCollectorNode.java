@@ -20,8 +20,6 @@ package com.example.customAuthNode;
 import com.google.common.base.Strings;
 import static org.forgerock.openam.auth.node.api.Action.send;
 
-import java.util.regex.Pattern;
-
 import javax.inject.Inject;
  
 import org.forgerock.openam.auth.node.api.SingleOutcomeNode;
@@ -29,7 +27,6 @@ import org.forgerock.openam.auth.node.api.Action;
 import org.forgerock.openam.auth.node.api.Node;
 import org.forgerock.openam.auth.node.api.NodeProcessException;
 import org.forgerock.openam.auth.node.api.TreeContext;
-import org.forgerock.openam.core.realms.Realm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +39,7 @@ import java.util.ResourceBundle;
 import javax.security.auth.callback.NameCallback;
 
 
-
+//TODO Update javadoc
 /**
  * A node that checks to see if zero-page login headers have specified username and whether that username is in a group
  * permitted to use zero-page login headers.
@@ -51,18 +48,12 @@ import javax.security.auth.callback.NameCallback;
                configClass      = VoisentryEnrolidCollectorNode.Config.class)
 public class VoisentryEnrolidCollectorNode extends SingleOutcomeNode {
 
-    private final Pattern DN_PATTERN = Pattern.compile("^[a-zA-Z0-9]=([^,]+),");
     private final Logger logger = LoggerFactory.getLogger(VoisentryEnrolidCollectorNode.class);
-    private final Config config;
-    private final Realm realm;
 
     /**
      * Configuration for the node.
      */
     public interface Config {
-        /**
-         * The header name for zero-page login that will contain the identity's username.
-         */
     }
     
     private static final String BUNDLE = "com/example/customAuthNode/VoisentryEnrolidCollectorNode";
@@ -73,17 +64,13 @@ public class VoisentryEnrolidCollectorNode extends SingleOutcomeNode {
      * from the plugin.
      *
      * @param config The service config.
-     * @param realm The realm the node is in.
-     * @throws NodeProcessException If the configuration was not valid.
      */
     @Inject
-    public VoisentryEnrolidCollectorNode(@Assisted Config config, @Assisted Realm realm) throws NodeProcessException {
-        this.config = config;
-        this.realm = realm;
+    public VoisentryEnrolidCollectorNode(@Assisted Config config) {
     }
 
     @Override
-    public Action process(TreeContext context) throws NodeProcessException {
+    public Action process(TreeContext context) {
         
         logger.error("Voisentry Enrolid Collector node started...");
         
