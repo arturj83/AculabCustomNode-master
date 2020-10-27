@@ -6,8 +6,8 @@
 package com.example.customAuthNode;
 
 /**
- *
- * @author hollowek
+ * Response codes from Voisentry server.
+ * @author artur.jablonski@aculab.com
  */
 public final class VoisentryResponseCode {
     
@@ -54,7 +54,7 @@ public final class VoisentryResponseCode {
     /** - Service temporarily disabled. */
     public static final int ERR_SERVICE                 = 503;
     
-    /** - - Not enough disk space or memory to fulfil the task. */
+    /** - - Not enough disk space or memory to fulfill the task. */
     public static final int ERR_DISK_MEM                = 507;
     
 }

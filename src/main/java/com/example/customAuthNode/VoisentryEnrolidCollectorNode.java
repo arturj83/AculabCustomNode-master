@@ -25,7 +25,6 @@ import javax.inject.Inject;
 import org.forgerock.openam.auth.node.api.SingleOutcomeNode;
 import org.forgerock.openam.auth.node.api.Action;
 import org.forgerock.openam.auth.node.api.Node;
-import org.forgerock.openam.auth.node.api.NodeProcessException;
 import org.forgerock.openam.auth.node.api.TreeContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +40,8 @@ import javax.security.auth.callback.NameCallback;
 
 //TODO Update javadoc
 /**
- * A node that checks to see if zero-page login headers have specified username and whether that username is in a group
- * permitted to use zero-page login headers.
+ * A node that that collects the enroll id and saves it in the shared state.
+ * @author artur.jablonski@aculab.com
  */
 @Node.Metadata(outcomeProvider  = SingleOutcomeNode.OutcomeProvider.class,
                configClass      = VoisentryEnrolidCollectorNode.Config.class)

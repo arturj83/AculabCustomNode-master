@@ -5,14 +5,12 @@
  */
 package com.example.customAuthNode;
 
-import com.sun.identity.shared.validation.URLValidator;
-import com.sun.identity.sm.RequiredValueValidator;
 import org.forgerock.openam.annotations.sm.Attribute;
 import org.forgerock.openam.annotations.sm.Config;
 
 /**
- *
- * @author hollowek
+ * Voisentry service configuration shared between the nodes
+ * @author artur.jablonski@aculab.com
  */
 @Config(scope = Config.Scope.REALM)
 public interface VoisentryService {
@@ -38,7 +36,7 @@ public interface VoisentryService {
     }
     
     /**
-    * The id repository field name for the enrollid source
+    * The id repository field name for the enrollid source.
     */
     @Attribute(order = 40)
     String idRepoEnrolidName();

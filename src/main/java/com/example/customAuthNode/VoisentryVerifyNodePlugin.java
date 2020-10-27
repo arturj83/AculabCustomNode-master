@@ -72,7 +72,7 @@ public class VoisentryVerifyNodePlugin extends AbstractNodeAmPlugin {
 	@Override
 	protected Map<String, Iterable<? extends Class<? extends Node>>> getNodesByVersion() {
 		return Collections.singletonMap(VoisentryVerifyNodePlugin.currentVersion,
-										Arrays.asList(VoisentryVerifyNode.class, VoisentryEnrolidCollectorNode.class, VoisentryAudioCollector.class, VoisentryUpdateNode.class));
+						Arrays.asList(VoisentryVerifyNode.class, VoisentryEnrolidCollectorNode.class, VoisentryAudioCollectorNode.class, VoisentryUpdateNode.class));
 	}
 
     /**

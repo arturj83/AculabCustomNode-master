@@ -10,8 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
- * @author hollowek
+ * Class used to process responses from Voisentry server.
+ * @author artur.jablonski@aculab.com
  */
 public class VoisentryResponse {
     

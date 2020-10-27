@@ -6,8 +6,8 @@
 package com.example.customAuthNode;
 
 /**
- *
- * @author hollowek
+ * Constant values used by VoisentryNode.
+ * @author artur.jablonski@aculab.com
  */
 public final class VoisentryConstants {
     
@@ -31,7 +31,7 @@ public final class VoisentryConstants {
         ID_REPO
     }
     
-    /** Config - enrolid source. */
+    /** Config - service enrolid source. */
     public enum ServiceGetEnrolId {
         USERNAME,
         ENROLID,

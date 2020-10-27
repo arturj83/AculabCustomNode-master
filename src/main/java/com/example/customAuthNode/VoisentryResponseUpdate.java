@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- * @author hollowek
+ * Class used to process Update response, inherits from the VoisentryResponse class.
+ * @author artur.jablonski@aculab.com
  */
 public class VoisentryResponseUpdate extends VoisentryResponse {
 

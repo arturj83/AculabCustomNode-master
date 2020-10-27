@@ -49,10 +49,9 @@ import static org.forgerock.openam.auth.node.api.SharedStateConstants.USERNAME;
 import org.forgerock.openam.sm.AnnotatedServiceRegistry;
 import org.forgerock.util.i18n.PreferredLocales;
 
-//TODO Update Javadov
 /**
- * A node that checks to see if zero-page login headers have specified username and whether that username is in a group
- * permitted to use zero-page login headers.
+ * A node that sends the Verify request to Voisentry server
+ * @author artur.jablonski@aculab.com
  */
 @Node.Metadata(outcomeProvider  = VoisentryVerifyNode.myCustomAuthNodeOutcomeProvider.class,
                configClass      = VoisentryVerifyNode.Config.class)
@@ -151,7 +150,7 @@ public class VoisentryVerifyNode implements Node {
         
         logger.error("VoisentryVerifyNode started");
 
-        //TODO Duplicated code with VoiceSentryUpdateNode. Externalize the method
+        //TODO Duplicated code with VoiceSentryUpdateNode. Externalize the method - Artur -> will do 
         logger.error("Get config attributes");
         String voisentryNodeUrl    = config.voisentryNodeUrl();
         if (voisentryNodeUrl == null || voisentryNodeUrl.isEmpty()) {
@@ -180,7 +179,6 @@ public class VoisentryVerifyNode implements Node {
         if (config.getEnrolId() == VoisentryConstants.GetEnrolId.SERVICE) {
             
             VoisentryConstants.ServiceGetEnrolId configGetEnrolId  = serviceConfig.getEnrolId();
-            String                               configEnrolIdName = serviceConfig.idRepoEnrolidName();
 
             //TODO Duplicated Code
             if (configGetEnrolId == VoisentryConstants.ServiceGetEnrolId.ENROLID) {

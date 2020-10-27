@@ -51,8 +51,8 @@ import org.forgerock.util.i18n.PreferredLocales;
 
 
 /**
- * A node that checks to see if zero-page login headers have specified username and whether that username is in a group
- * permitted to use zero-page login headers.
+ * A node that sends the Update request to Voisentry server
+ * @author artur.jablonski@aculab.com
  */
 @Node.Metadata(outcomeProvider  = VoisentryUpdateNode.VoisentryUpdateNodeOutcomeProvider.class,
                configClass      = VoisentryUpdateNode.Config.class)
@@ -136,6 +136,7 @@ public class VoisentryUpdateNode extends AbstractDecisionNode {
         
         logger.error("VoisentryUpdateNode started");
         
+        //TODO Externalize this code
         logger.error("Get config attributes");
         String voisentryNodeUrl    = config.voisentryNodeUrl();
         if (voisentryNodeUrl == null || voisentryNodeUrl.isEmpty()) {
@@ -161,6 +162,7 @@ public class VoisentryUpdateNode extends AbstractDecisionNode {
         
         String enrolId = null;
         
+        //get the enrolid from the service config
         if (config.getEnrolId() == VoisentryConstants.GetEnrolId.SERVICE) {
             
             VoisentryConstants.ServiceGetEnrolId configGetEnrolId  = serviceConfig.getEnrolId();
@@ -220,6 +222,7 @@ public class VoisentryUpdateNode extends AbstractDecisionNode {
             }
         }
         
+        //get the enrolid from the node config
         if (config.getEnrolId() == VoisentryConstants.GetEnrolId.ENROLID) {
             
             logger.error("Get the enrolid from the shared state");
@@ -236,7 +239,6 @@ public class VoisentryUpdateNode extends AbstractDecisionNode {
         } else {
             
             VoisentryConstants.GetEnrolId configGetEnrolId  = config.getEnrolId();
-            String                        configEnrolIdName = config.idRepoEnrolidName();
             
             logger.error("Get the username from the shared state");
             String username = null;

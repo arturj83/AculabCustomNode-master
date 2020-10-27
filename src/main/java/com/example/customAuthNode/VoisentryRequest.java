@@ -21,8 +21,8 @@ import org.forgerock.openam.auth.node.api.NodeProcessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
- *
- * @author hollowek
+ * Class used to send http requests to Voisentry server.
+ * @author artur.jablonski@aculab.com
  */
 public class VoisentryRequest {
     
@@ -33,7 +33,7 @@ public class VoisentryRequest {
 
 
     public VoisentryRequest(String voisentryNodeUrl, String voisentryDatasetKey) {
-        this.voisentryNodeUrl = voisentryNodeUrl;
+        this.voisentryNodeUrl    = voisentryNodeUrl;
         this.voisentryDatasetKey = voisentryDatasetKey;
     }
 
@@ -43,24 +43,8 @@ public class VoisentryRequest {
         logger.error("Sending verify request...");
         
         String reqUrl = this.voisentryNodeUrl + "/verify?key=" + this.voisentryDatasetKey + "&enrolid=" + enrolId;
-
-        //TODO Duplicated code
-        MultipartEntityBuilder mpart = MultipartEntityBuilder.create();
-        if (audioSource != null && !audioSource.isEmpty()) {
-            for (int i = 0; i < audioSource.size(); i++) {
-                String argName = "source";
-                if (audioSource.size() > 1) {
-                    argName += "" + (i+1);
-                }
-                mpart.addBinaryBody(argName,
-                                    Base64.getDecoder().decode(audioSource.get(i)),
-                                    ContentType.DEFAULT_BINARY,
-                                    "audiosource" + (i+1) + ".wav");
-            }
- 
-        }
         
-        String result = this.sendPostRequest(reqUrl, mpart);
+        String result = this.sendPostRequest(reqUrl, createMpartBody(audioSource));
         logger.error("Send verify post request result: " + result);
         
         
@@ -74,25 +58,8 @@ public class VoisentryRequest {
         logger.error("Sending update request...");
         
         String reqUrl = this.voisentryNodeUrl + "/update?key=" + this.voisentryDatasetKey + "&enrolid=" + enrolId;
-
-        //TODO Duplicated code
-        MultipartEntityBuilder mpart = MultipartEntityBuilder.create();
-        if (audioSource != null && !audioSource.isEmpty()) {
-            for (int i = 0; i < audioSource.size(); i++) {
-                String argName = "source";
-                if (audioSource.size() > 1) {
-                    argName += "" + (i+1);
-                }
-                mpart.addBinaryBody(argName,
-                                    Base64.getDecoder().decode(audioSource.get(i)),
-                                    ContentType.DEFAULT_BINARY,
-                                    "audiosource" + (i+1) + ".wav");
-                
-            }
- 
-        }
         
-        String result = this.sendPostRequest(reqUrl, mpart);
+        String result = this.sendPostRequest(reqUrl, createMpartBody(audioSource));
         logger.error("Send update post request result: " + result);
         
         
@@ -127,6 +94,30 @@ public class VoisentryRequest {
         }
         return null;
 
+    }
+    
+    
+    //create multipart body
+    private MultipartEntityBuilder createMpartBody (List<String> audioSource) {
+        
+        MultipartEntityBuilder mpart = MultipartEntityBuilder.create();
+        if (audioSource != null && !audioSource.isEmpty()) {
+            for (int i = 0; i < audioSource.size(); i++) {
+                String argName = "source";
+                if (audioSource.size() > 1) {
+                    argName += "" + (i+1);
+                }
+                mpart.addBinaryBody(argName,
+                                    Base64.getDecoder().decode(audioSource.get(i)),
+                                    ContentType.DEFAULT_BINARY,
+                                    "audiosource" + (i+1) + ".wav");
+                
+            }
+ 
+        }
+        
+        return mpart;
+        
     }
     
 }

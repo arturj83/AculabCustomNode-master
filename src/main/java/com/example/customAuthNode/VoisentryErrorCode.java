@@ -6,14 +6,14 @@
 package com.example.customAuthNode;
 
 /**
- *
- * @author hollowek
+ * Error codes returned by the Voisentry server.
+ * @author artur.jablonski@aculab.com
  */
 public enum VoisentryErrorCode {
     
     /** the error codes. */
 
-    //TODO Error codes never used
+    //Error codes used to configure the outcomes in VoisentryVerifyNode and VoisentryUpdateNode
     Err400("Error 400 Bad API",          VoisentryResponseCode.ERR_BAD_API_REQ),
     Err405("Error 405 API not allowed",  VoisentryResponseCode.ERR_BAD_API_REQ_NOT_ALLOWED),
     Err408("Error 408 DB timeout",       VoisentryResponseCode.ERR_DB_TIMEOUT),
