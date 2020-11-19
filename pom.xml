@@ -20,12 +20,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>VoieSentryNode</artifactId>
+    <artifactId>VoiSentryNode</artifactId>
 
 <!--    TODO This should have a valid groupId Name for AcuLab-->
     <groupId>com.example</groupId>
     <version>1.0.0-SNAPSHOT</version>    
-    <name>VoieSentryNode</name>
+    <name>VoiSentryNode</name>
     <description>An Authentication Tree Node for ForgeRock's Identity Platform</description>
 
     <properties>
